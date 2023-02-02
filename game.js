@@ -12,9 +12,16 @@ function mousePressed(){
     if(isLooping() == false){
         Game.score = 0
         loop()
+        interval = setInterval(() =>{
+            Game.sendStatistics()
+        }, 5000);
     }
     Game.checkIfBalloonBurst()
 }
+
+let interval = setInterval(() =>{
+    Game.sendStatistics()
+}, 5000);
 
 function draw(){
     background('skyblue')
@@ -24,6 +31,7 @@ function draw(){
         //lose condition
         if(balloon.y < balloon.size/-2 && balloon.color != "black"){  
             noLoop()
+            clearInterval(interval)
             Game.balloons.length = 0             
             background('hsl(160, 100%, 50%)')
             textSize(60)
@@ -60,8 +68,29 @@ function draw(){
 //game class
 class Game{
 static balloons = []
+static commonPop = 0
+static uniqPop = 0
+static angryPop = 0
+static rPop = 0
 static score = 0
 static highscore = 0
+
+static sendStatistics(){
+    let statistics = {
+        commonBurst: this.commonPop,
+        uBurst: this.uniqPop,
+        rBurst: this.rPop,
+        aBurst: this.angryPop,
+        score: this.score,
+    }
+    fetch("/statistic", {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(statistics)
+    });
+}
 
 static addCommonBalloon(){
     let balloon = new CommonBalloon("blue", 50)
@@ -117,7 +146,9 @@ move(score){
 burst(index, score){
     Game.balloons.splice(index, 1)
     Game.score += score
+    Game.commonPop += 1
 }
+
 }
 //small green balloon class
 class RareBalloon extends CommonBalloon{
@@ -127,6 +158,7 @@ class RareBalloon extends CommonBalloon{
     burst(index, score){
         Game.balloons.splice(index, 1)
         Game.score += score * 5
+        Game.uniqPop += 1
     }
 }
 //evil balloon class
@@ -137,6 +169,7 @@ class EvilBalloon extends CommonBalloon{
     burst(index, score){
         Game.balloons.splice(index, 1)
         Game.score -= score * 5
+        Game.angryPop += 1
     }
 //random balloon class    
 }
@@ -147,5 +180,6 @@ class RandomBalloon extends CommonBalloon{
     burst(index, score){
         Game.balloons.splice(index, 1)
         Game.score += score * getRandomInt(15)
+        Game.uPop += 1
     }
 }

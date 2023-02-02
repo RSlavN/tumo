@@ -1,0 +1,6 @@
+{"commonBurst":5,"uBurst":1,"rBurst":0,"aBurst":0,"score":19}
+{"commonBurst":9,"uBurst":3,"rBurst":0,"aBurst":0,"score":0}
+{"commonBurst":4,"uBurst":1,"rBurst":0,"aBurst":0,"score":17}
+{"commonBurst":7,"uBurst":6,"rBurst":0,"aBurst":0,"score":63}
+{"commonBurst":12,"uBurst":10,"rBurst":0,"aBurst":0,"score":118}
+{"commonBurst":21,"uBurst":12,"rBurst":0,"aBurst":0,"score":175}
